@@ -4,7 +4,20 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, Filter, X } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
+  Calendar,
+  Clock,
+  Filter,
+  X,
+  ChevronDown,
+  ChevronRight,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Event } from "@/app/page";
 
@@ -20,6 +33,7 @@ const eventTypeColors = {
   motogp: "bg-[#b251d6]",
   wec: "bg-black",
   wrc: "bg-orange-500",
+  epl: "bg-green-600",
   other: "bg-gray-500",
 };
 
@@ -28,6 +42,7 @@ const typeToColorKey: Record<Event["type"], keyof typeof eventTypeColors> = {
   MotoGP: "motogp",
   WEC: "wec",
   WRC: "wrc",
+  EPL: "epl",
 };
 
 export function Sidebar({
@@ -39,37 +54,63 @@ export function Sidebar({
   const [selectedFilters, setSelectedFilters] = useState<Set<string>>(
     new Set(["all"])
   );
+  const [isFilterOpen, setIsFilterOpen] = useState(true);
 
-  const isAllSelected =
-    selectedFilters.has("all") || selectedFilters.size === 0;
+  const isAllSelected = selectedFilters.has("all");
 
   const toggleFilter = (key: string) => {
     setSelectedFilters((prev) => {
       const next = new Set(prev);
+
       if (key === "all") {
-        return new Set(["all"]);
+        // If "all" is currently selected, deselect it and select all individual categories
+        if (prev.has("all")) {
+          return new Set(["formula1", "motogp", "wec", "wrc", "epl"]);
+        } else {
+          // If "all" is not selected, select it and clear individual selections
+          return new Set(["all"]);
+        }
       }
-      next.delete("all");
-      if (next.has(key)) {
-        next.delete(key);
+
+      // Handle individual category toggles
+      // If "all" was selected and we're toggling an individual category
+      if (prev.has("all")) {
+        // Remove "all" and select all categories EXCEPT the clicked one
+        const allCategories = ["formula1", "motogp", "wec", "wrc", "epl"];
+        return new Set(allCategories.filter((cat) => cat !== key));
       } else {
-        next.add(key);
+        // Normal individual category toggle when "all" is not selected
+        if (next.has(key)) {
+          next.delete(key);
+        } else {
+          next.add(key);
+        }
+
+        // If no individual categories are selected, select "all"
+        if (next.size === 0) {
+          return new Set(["all"]);
+        }
+
+        // If all individual categories are selected, switch to "all"
+        const allCategories = ["formula1", "motogp", "wec", "wrc", "epl"];
+        const hasAllCategories = allCategories.every((cat) => next.has(cat));
+        if (hasAllCategories) {
+          return new Set(["all"]);
+        }
       }
-      if (next.size === 0) {
-        return new Set(["all"]);
-      }
+
       return next;
     });
   };
 
-  const isSelected = (key: string) =>
-    selectedFilters.has(key) && !isAllSelected;
+  const isSelected = (key: string) => selectedFilters.has(key) || isAllSelected;
 
   const selectedColorClasses: Record<string, string> = {
     formula1: "bg-red-600 text-white",
     motogp: "bg-[#b251d6] text-white",
     wec: "bg-black text-white",
     wrc: "bg-orange-500 text-white",
+    epl: "bg-green-600 text-white",
   };
 
   const filteredEvents = events.filter((event) => {
@@ -105,7 +146,7 @@ export function Sidebar({
         )}
       >
         <div className="flex flex-col h-full">
-          <div className="px-6 py-5 border-b border-sidebar-border">
+          <div className="px-6 py-4.5 border-b border-sidebar-border">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Calendar className="h-6 w-6 text-sidebar-primary" />
@@ -125,61 +166,130 @@ export function Sidebar({
           </div>
 
           <div className="px-6 py-4 border-b border-sidebar-border">
-            <div className="flex items-center gap-2 mb-4">
-              <Filter className="h-4 w-4 text-sidebar-foreground" />
-              <span className="text-sm font-medium text-sidebar-foreground">
-                Filter Events
-              </span>
-            </div>
-            <div className="grid grid-cols-2 gap-2 bg-violet-50 p-2 rounded-md">
-              <Button
-                variant={isAllSelected ? "default" : "outline"}
-                size="sm"
-                onClick={() => toggleFilter("all")}
-                className={cn(
-                  isAllSelected &&
-                    "bg-sidebar-primary text-sidebar-primary-foreground"
-                )}
-              >
-                All
-              </Button>
-              <Button
-                variant={isSelected("formula1") ? "default" : "outline"}
-                size="sm"
-                onClick={() => toggleFilter("formula1")}
-                className={cn(
-                  isSelected("formula1") && selectedColorClasses["formula1"]
-                )}
-              >
-                Formula 1
-              </Button>
-              <Button
-                variant={isSelected("motogp") ? "default" : "outline"}
-                size="sm"
-                onClick={() => toggleFilter("motogp")}
-                className={cn(
-                  isSelected("motogp") && selectedColorClasses["motogp"]
-                )}
-              >
-                MotoGP
-              </Button>
-              <Button
-                variant={isSelected("wec") ? "default" : "outline"}
-                size="sm"
-                onClick={() => toggleFilter("wec")}
-                className={cn(isSelected("wec") && selectedColorClasses["wec"])}
-              >
-                WEC
-              </Button>
-              <Button
-                variant={isSelected("wrc") ? "default" : "outline"}
-                size="sm"
-                onClick={() => toggleFilter("wrc")}
-                className={cn(isSelected("wrc") && selectedColorClasses["wrc"])}
-              >
-                WRC
-              </Button>
-            </div>
+            <Collapsible open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+              <CollapsibleTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-between p-0 h-auto hover:bg-transparent"
+                >
+                  <div className="flex items-center gap-2">
+                    <Filter className="h-4 w-4 text-sidebar-foreground" />
+                    <span className="text-sm font-medium text-sidebar-foreground">
+                      Filter Events
+                    </span>
+                  </div>
+                  {isFilterOpen ? (
+                    <ChevronDown className="h-4 w-4 text-sidebar-foreground" />
+                  ) : (
+                    <ChevronRight className="h-4 w-4 text-sidebar-foreground" />
+                  )}
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="mt-4">
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="all"
+                      checked={isAllSelected}
+                      onCheckedChange={() => toggleFilter("all")}
+                    />
+                    <label
+                      htmlFor="all"
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      All Events
+                    </label>
+                  </div>
+
+                  <div className="space-y-2 pl-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="formula1"
+                        checked={isSelected("formula1")}
+                        onCheckedChange={() => toggleFilter("formula1")}
+                      />
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-red-600"></div>
+                        <label
+                          htmlFor="formula1"
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          Formula 1
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="motogp"
+                        checked={isSelected("motogp")}
+                        onCheckedChange={() => toggleFilter("motogp")}
+                      />
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-[#b251d6]"></div>
+                        <label
+                          htmlFor="motogp"
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          MotoGP
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="wec"
+                        checked={isSelected("wec")}
+                        onCheckedChange={() => toggleFilter("wec")}
+                      />
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-black"></div>
+                        <label
+                          htmlFor="wec"
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          WEC
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="wrc"
+                        checked={isSelected("wrc")}
+                        onCheckedChange={() => toggleFilter("wrc")}
+                      />
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+                        <label
+                          htmlFor="wrc"
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          WRC
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="epl"
+                        checked={isSelected("epl")}
+                        onCheckedChange={() => toggleFilter("epl")}
+                      />
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-green-600"></div>
+                        <label
+                          htmlFor="epl"
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          EPL
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
           </div>
 
           <div className="flex-1 p-6 overflow-auto">

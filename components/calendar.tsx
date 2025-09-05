@@ -22,6 +22,7 @@ const eventTypeColors = {
   motogp: "bg-[#b251d6] text-white",
   wec: "bg-black text-white",
   wrc: "bg-orange-500 text-white",
+  epl: "bg-green-600 text-white",
   other: "bg-gray-500 text-white",
 };
 
@@ -30,6 +31,7 @@ const typeToColorKey: Record<Event["type"], keyof typeof eventTypeColors> = {
   MotoGP: "motogp",
   WEC: "wec",
   WRC: "wrc",
+  EPL: "epl",
 };
 
 export function Calendar({

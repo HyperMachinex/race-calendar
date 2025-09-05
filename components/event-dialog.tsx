@@ -171,6 +171,7 @@ export function EventDialog({
                   <SelectItem value="MotoGP">MotoGP</SelectItem>
                   <SelectItem value="WEC">WEC</SelectItem>
                   <SelectItem value="WRC">WRC</SelectItem>
+                  <SelectItem value="EPL">EPL</SelectItem>
                   <SelectItem value="other">Other</SelectItem>
                 </SelectContent>
               </Select>

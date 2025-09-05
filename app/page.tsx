@@ -13,7 +13,7 @@ export interface Event {
   date: Date;
   time: string;
   description?: string;
-  type: "Formula 1" | "MotoGP" | "WEC" | "WRC";
+  type: "Formula 1" | "MotoGP" | "WEC" | "WRC" | "EPL";
   sessionType: "Race" | "Practice" | "Qualify" | "Sprint";
 }
 

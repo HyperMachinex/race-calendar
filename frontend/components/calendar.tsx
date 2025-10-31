@@ -19,10 +19,12 @@ interface CalendarProps {
 
 const eventTypeColors = {
   formula1: "bg-red-600 text-white",
-  motogp: "bg-[#b251d6] text-white",
-  wec: "bg-black text-white",
-  wrc: "bg-orange-500 text-white",
-  epl: "bg-green-600 text-white",
+  motogp: "bg-orange-600 text-white",
+  wec: "bg-blue-600 text-white",
+  rally: "bg-green-600 text-white",
+  nascar: "bg-yellow-500 text-white",
+  indycar: "bg-blue-900 text-white",
+  formulae: "bg-cyan-500 text-white",
   other: "bg-gray-500 text-white",
 };
 
@@ -30,8 +32,10 @@ const typeToColorKey: Record<Event["type"], keyof typeof eventTypeColors> = {
   "Formula 1": "formula1",
   MotoGP: "motogp",
   WEC: "wec",
-  WRC: "wrc",
-  EPL: "epl",
+  Rally: "rally",
+  NASCAR: "nascar",
+  IndyCar: "indycar",
+  "Formula E": "formulae",
 };
 
 export function Calendar({

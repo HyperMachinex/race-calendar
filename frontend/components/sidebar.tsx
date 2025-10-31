@@ -30,10 +30,12 @@ interface SidebarProps {
 
 const eventTypeColors = {
   formula1: "bg-red-600",
-  motogp: "bg-[#b251d6]",
-  wec: "bg-black",
-  wrc: "bg-orange-500",
-  epl: "bg-green-600",
+  motogp: "bg-orange-600",
+  wec: "bg-blue-600",
+  rally: "bg-green-600",
+  nascar: "bg-yellow-500",
+  indycar: "bg-blue-900",
+  formulae: "bg-cyan-500",
   other: "bg-gray-500",
 };
 
@@ -41,8 +43,10 @@ const typeToColorKey: Record<Event["type"], keyof typeof eventTypeColors> = {
   "Formula 1": "formula1",
   MotoGP: "motogp",
   WEC: "wec",
-  WRC: "wrc",
-  EPL: "epl",
+  Rally: "rally",
+  NASCAR: "nascar",
+  IndyCar: "indycar",
+  "Formula E": "formulae",
 };
 
 export function Sidebar({
@@ -65,7 +69,7 @@ export function Sidebar({
       if (key === "all") {
         // If "all" is currently selected, deselect it and select all individual categories
         if (prev.has("all")) {
-          return new Set(["formula1", "motogp", "wec", "wrc", "epl"]);
+          return new Set(["formula1", "motogp", "wec", "rally", "nascar", "indycar", "formulae"]);
         } else {
           // If "all" is not selected, select it and clear individual selections
           return new Set(["all"]);
@@ -76,7 +80,7 @@ export function Sidebar({
       // If "all" was selected and we're toggling an individual category
       if (prev.has("all")) {
         // Remove "all" and select all categories EXCEPT the clicked one
-        const allCategories = ["formula1", "motogp", "wec", "wrc", "epl"];
+        const allCategories = ["formula1", "motogp", "wec", "rally", "nascar", "indycar", "formulae"];
         return new Set(allCategories.filter((cat) => cat !== key));
       } else {
         // Normal individual category toggle when "all" is not selected
@@ -92,7 +96,7 @@ export function Sidebar({
         }
 
         // If all individual categories are selected, switch to "all"
-        const allCategories = ["formula1", "motogp", "wec", "wrc", "epl"];
+        const allCategories = ["formula1", "motogp", "wec", "rally", "nascar", "indycar", "formulae"];
         const hasAllCategories = allCategories.every((cat) => next.has(cat));
         if (hasAllCategories) {
           return new Set(["all"]);
@@ -107,10 +111,12 @@ export function Sidebar({
 
   const selectedColorClasses: Record<string, string> = {
     formula1: "bg-red-600 text-white",
-    motogp: "bg-[#b251d6] text-white",
-    wec: "bg-black text-white",
-    wrc: "bg-orange-500 text-white",
-    epl: "bg-green-600 text-white",
+    motogp: "bg-orange-600 text-white",
+    wec: "bg-blue-600 text-white",
+    rally: "bg-green-600 text-white",
+    nascar: "bg-yellow-500 text-white",
+    indycar: "bg-blue-900 text-white",
+    formulae: "bg-cyan-500 text-white",
   };
 
   const filteredEvents = events.filter((event) => {
@@ -255,34 +261,68 @@ export function Sidebar({
 
                     <div className="flex items-center space-x-2">
                       <Checkbox
-                        id="wrc"
-                        checked={isSelected("wrc")}
-                        onCheckedChange={() => toggleFilter("wrc")}
+                        id="rally"
+                        checked={isSelected("rally")}
+                        onCheckedChange={() => toggleFilter("rally")}
                       />
                       <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+                        <div className="w-3 h-3 rounded-full bg-green-600"></div>
                         <label
-                          htmlFor="wrc"
+                          htmlFor="rally"
                           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                         >
-                          WRC
+                          Rally
                         </label>
                       </div>
                     </div>
 
                     <div className="flex items-center space-x-2">
                       <Checkbox
-                        id="epl"
-                        checked={isSelected("epl")}
-                        onCheckedChange={() => toggleFilter("epl")}
+                        id="nascar"
+                        checked={isSelected("nascar")}
+                        onCheckedChange={() => toggleFilter("nascar")}
                       />
                       <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full bg-green-600"></div>
+                        <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                         <label
-                          htmlFor="epl"
+                          htmlFor="nascar"
                           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                         >
-                          EPL
+                          NASCAR
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="indycar"
+                        checked={isSelected("indycar")}
+                        onCheckedChange={() => toggleFilter("indycar")}
+                      />
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-blue-900"></div>
+                        <label
+                          htmlFor="indycar"
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          IndyCar
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="formulae"
+                        checked={isSelected("formulae")}
+                        onCheckedChange={() => toggleFilter("formulae")}
+                      />
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-cyan-500"></div>
+                        <label
+                          htmlFor="formulae"
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          Formula E
                         </label>
                       </div>
                     </div>

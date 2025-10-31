@@ -170,9 +170,10 @@ export function EventDialog({
                   <SelectItem value="Formula 1">Formula 1</SelectItem>
                   <SelectItem value="MotoGP">MotoGP</SelectItem>
                   <SelectItem value="WEC">WEC</SelectItem>
-                  <SelectItem value="WRC">WRC</SelectItem>
-                  <SelectItem value="EPL">EPL</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
+                  <SelectItem value="Rally">Rally</SelectItem>
+                  <SelectItem value="NASCAR">NASCAR</SelectItem>
+                  <SelectItem value="IndyCar">IndyCar</SelectItem>
+                  <SelectItem value="Formula E">Formula E</SelectItem>
                 </SelectContent>
               </Select>
             </div>

@@ -1,5 +1,5 @@
-// MongoDB initialization script
-db = db.getSiblingDB('event_calendar');
+// MongoDB initialization script for Race Calendar
+db = db.getSiblingDB('race_calendar');
 
 // Create collections
 db.createCollection('events');
@@ -12,80 +12,80 @@ db.events.createIndex({ title: 'text', description: 'text' });
 // Create indexes for categories
 db.categories.createIndex({ name: 1 }, { unique: true });
 
-// Insert default categories
+// Insert default Motorsports categories
 db.categories.insertMany([
   {
-    name: 'EPL',
-    color: '#8b5cf6',
-    icon: '⚽',
-    description: 'English Premier League events',
+    name: 'Formula 1',
+    color: '#e10600',
+    icon: '🏎️',
+    description: 'Formula 1 Grand Prix races',
     isDefault: true,
     createdAt: new Date(),
     updatedAt: new Date()
   },
   {
-    name: 'Personal',
-    color: '#3b82f6',
-    icon: '👤',
-    description: 'Personal events and appointments',
+    name: 'MotoGP',
+    color: '#ff6600',
+    icon: '🏍️',
+    description: 'MotoGP motorcycle racing events',
     isDefault: true,
     createdAt: new Date(),
     updatedAt: new Date()
   },
   {
-    name: 'Work',
-    color: '#f97316',
-    icon: '💼',
-    description: 'Work-related events and meetings',
+    name: 'NASCAR',
+    color: '#ffd700',
+    icon: '🏁',
+    description: 'NASCAR Cup Series races',
     isDefault: true,
     createdAt: new Date(),
     updatedAt: new Date()
   },
   {
-    name: 'Holiday',
-    color: '#10b981',
-    icon: '🎉',
-    description: 'Holidays and celebrations',
+    name: 'WEC',
+    color: '#0066cc',
+    icon: '🏆',
+    description: 'World Endurance Championship',
     isDefault: true,
     createdAt: new Date(),
     updatedAt: new Date()
   },
   {
-    name: 'Birthday',
-    color: '#ec4899',
-    icon: '🎂',
-    description: 'Birthday celebrations',
+    name: 'Rally',
+    color: '#00a650',
+    icon: '🚗',
+    description: 'WRC and rally championships',
     isDefault: true,
     createdAt: new Date(),
     updatedAt: new Date()
   },
   {
-    name: 'Meeting',
-    color: '#6366f1',
-    icon: '📅',
-    description: 'Meetings and conferences',
+    name: 'IndyCar',
+    color: '#001489',
+    icon: '🏎️',
+    description: 'IndyCar Series races',
     isDefault: true,
     createdAt: new Date(),
     updatedAt: new Date()
   },
   {
-    name: 'Reminder',
-    color: '#f59e0b',
-    icon: '⏰',
-    description: 'Important reminders',
+    name: 'Formula E',
+    color: '#00aaff',
+    icon: '⚡',
+    description: 'Formula E electric racing',
     isDefault: true,
     createdAt: new Date(),
     updatedAt: new Date()
   },
   {
     name: 'Other',
-    color: '#14b8a6',
-    icon: '📌',
-    description: 'Other events',
+    color: '#6b7280',
+    icon: '🏁',
+    description: 'Other motorsports events',
     isDefault: true,
     createdAt: new Date(),
     updatedAt: new Date()
   }
 ]);
 
-print('MongoDB initialized successfully with default categories');
+print('Race Calendar MongoDB initialized successfully with Motorsports categories');

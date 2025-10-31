@@ -1,7 +1,7 @@
 {
-  "name": "event-calendar-backend",
+  "name": "race-calendar-backend",
   "version": "1.0.0",
-  "description": "Backend API for Event Calendar application",
+  "description": "Backend API for Race Calendar - Motorsports event tracking application",
   "main": "dist/server.js",
   "scripts": {
     "dev": "nodemon src/server.ts",
@@ -13,7 +13,9 @@
     "test:watch": "jest --watch"
   },
   "keywords": [
-    "event-calendar",
+    "race-calendar",
+    "motorsports",
+    "racing",
     "api",
     "express",
     "nodejs",

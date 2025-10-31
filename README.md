@@ -1,6 +1,10 @@
-# Event Calendar - Fullstack Application
+# Race Calendar - Motorsports Event Tracking
 
-A modern, professional event calendar application with separated frontend and backend architecture.
+A modern, professional motorsports race calendar application focused exclusively on racing events from various championships worldwide.
+
+## 🏁 About
+
+Race Calendar is a specialized application designed for motorsports enthusiasts to track and manage racing events from major championships including Formula 1, MotoGP, NASCAR, WEC, Rally, IndyCar, and Formula E.
 
 ## 🏗️ Architecture
 
@@ -13,7 +17,7 @@ A modern, professional event calendar application with separated frontend and ba
 ### Backend
 - **Node.js & Express** - RESTful API server
 - **TypeScript** - Type-safe backend code
-- **MongoDB** - NoSQL database for events and categories
+- **MongoDB** - NoSQL database for races and categories
 - **PostgreSQL** - Relational database (optional)
 - **Socket.IO** - Real-time updates
 
@@ -25,13 +29,15 @@ A modern, professional event calendar application with separated frontend and ba
 ## 📁 Project Structure
 
 ```
-event-calendar/
+race-calendar/
 ├── frontend/               # Next.js frontend application
 │   ├── app/               # Next.js App Router
 │   ├── components/        # React components
+│   ├── constants/         # Motorsports categories
 │   ├── hooks/             # Custom React hooks
 │   ├── lib/               # Utility functions
 │   ├── services/          # API service layer
+│   ├── types/             # TypeScript types
 │   ├── public/            # Static assets
 │   ├── Dockerfile         # Frontend Docker image
 │   └── package.json       # Frontend dependencies
@@ -40,7 +46,7 @@ event-calendar/
 │   ├── src/
 │   │   ├── config/       # Configuration files
 │   │   ├── controllers/  # Request handlers
-│   │   ├── database/     # DB init scripts
+│   │   ├── database/     # DB init scripts with motorsports data
 │   │   ├── middleware/   # Express middleware
 │   │   ├── models/       # Database models
 │   │   ├── routes/       # API routes
@@ -52,12 +58,6 @@ event-calendar/
 │   │   └── server.ts     # Entry point
 │   ├── Dockerfile        # Backend Docker image
 │   └── package.json      # Backend dependencies
-│
-├── docs/                  # Documentation
-│   ├── INDEX.md          # Documentation index
-│   ├── QUICKSTART.md     # Quick start guide
-│   ├── ARCHITECTURE.md   # Architecture details
-│   └── ... (more docs)
 │
 └── docker-compose.yml    # Multi-container setup
 ```
@@ -74,7 +74,7 @@ event-calendar/
 1. **Clone the repository**
 ```bash
 git clone <repository-url>
-cd event-calendar
+cd race-calendar
 ```
 
 2. **Start all services**
@@ -141,57 +141,57 @@ npm run dev
 http://localhost:5000/api/v1
 ```
 
-### Events API
+### Events API (Racing Events)
 
-**Get all events**
+**Get all races**
 ```http
 GET /events
 Query Parameters:
-  - categoryId: string (optional)
+  - categoryId: string (optional) - Filter by racing series
   - startDate: string (optional, ISO format)
   - endDate: string (optional, ISO format)
-  - search: string (optional)
+  - search: string (optional) - Search race names
 ```
 
-**Get event by ID**
+**Get race by ID**
 ```http
 GET /events/:id
 ```
 
-**Create event**
+**Create race event**
 ```http
 POST /events
 Content-Type: application/json
 
 {
-  "title": "Event Title",
-  "description": "Event description",
-  "date": "2025-10-27",
-  "startTime": "14:00",
-  "endTime": "16:00",
-  "categoryId": "category-id",
-  "location": "Event location",
-  "color": "#3b82f6",
+  "title": "Monaco Grand Prix",
+  "description": "Formula 1 race in Monaco",
+  "date": "2025-05-25",
+  "startTime": "15:00",
+  "endTime": "17:00",
+  "categoryId": "formula1",
+  "location": "Circuit de Monaco",
+  "color": "#e10600",
   "isAllDay": false
 }
 ```
 
-**Update event**
+**Update race event**
 ```http
 PATCH /events/:id
 Content-Type: application/json
 
 {
-  "title": "Updated Title"
+  "title": "Updated Race Name"
 }
 ```
 
-**Delete event**
+**Delete race event**
 ```http
 DELETE /events/:id
 ```
 
-### Categories API
+### Categories API (Racing Series)
 
 **Get all categories**
 ```http
@@ -204,10 +204,10 @@ POST /categories
 Content-Type: application/json
 
 {
-  "name": "Category Name",
-  "color": "#3b82f6",
-  "icon": "📅",
-  "description": "Category description"
+  "name": "F2",
+  "color": "#0066cc",
+  "icon": "🏎️",
+  "description": "Formula 2 Championship"
 }
 ```
 
@@ -232,10 +232,10 @@ GET /health
 ```env
 NODE_ENV=development
 PORT=5000
-MONGODB_URI=mongodb://mongo:27017/event_calendar
+MONGODB_URI=mongodb://mongo:27017/race_calendar
 POSTGRES_HOST=postgres
 POSTGRES_PORT=5432
-POSTGRES_DB=event_calendar
+POSTGRES_DB=race_calendar
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 JWT_SECRET=your-secret-key
@@ -244,10 +244,23 @@ CORS_ORIGIN=http://localhost:3000
 
 ### Frontend Environment Variables
 ```env
-NEXT_PUBLIC_APP_NAME="Event Calendar"
+NEXT_PUBLIC_APP_NAME="Race Calendar"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 NEXT_PUBLIC_API_URL="http://localhost:5000/api/v1"
 ```
+
+## 🏁 Motorsports Categories
+
+The application comes pre-configured with these racing series:
+
+- **Formula 1** - Grand Prix races
+- **MotoGP** - Motorcycle Grand Prix
+- **NASCAR** - Cup Series races
+- **WEC** - World Endurance Championship
+- **Rally** - WRC and rally championships
+- **IndyCar** - IndyCar Series
+- **Formula E** - Electric racing series
+- **Other** - Additional motorsports events
 
 ## 🧪 Testing
 
@@ -299,10 +312,9 @@ npm start
 
 ## 🌟 Features
 
-- ✅ Create, read, update, delete events
-- ✅ Category management
-- ✅ Date filtering
-- ✅ Search functionality
+- ✅ Track racing events from multiple championships
+- ✅ Category management for different racing series
+- ✅ Date filtering and search
 - ✅ Real-time updates via Socket.IO
 - ✅ Responsive design
 - ✅ Dark mode support
@@ -341,29 +353,6 @@ npm start
 - Docker Compose
 - Multi-stage builds
 
-## 📖 Documentation
-
-### Quick Links
-- ⭐ [**Reading Order Guide**](./docs/READING_ORDER.md) - **START HERE** - Choose your learning path
-- 📚 [**Documentation Index**](./docs/INDEX.md) - Complete documentation guide
-- 🚀 [**Quick Start Guide**](./docs/QUICKSTART.md) - Get started in 5 minutes
-- 🏗️ [**Architecture**](./docs/ARCHITECTURE.md) - System architecture details
-- 📋 [**Project Status**](./docs/PROJECT_STATUS.md) - Current project status
-
-### Detailed Documentation
-- [Complete Summary](./docs/SUMMARY.md) - Full refactoring overview
-- [Removed Items & Changes](./docs/REMOVED_ITEMS.md) - What was removed and why
-- [Tech Stack Details](./docs/TECH_STACK.md) - Technology stack breakdown
-- [Project Structure](./docs/PROJECT_STRUCTURE.md) - Code organization
-- [Setup Guide](./docs/SETUP.md) - Detailed setup instructions
-- [Deployment Guide](./docs/DEPLOYMENT.md) - Deployment options
-- [Contributing Guidelines](./docs/CONTRIBUTING.md) - How to contribute
-- [Changelog](./docs/CHANGELOG.md) - Version history
-
-### Component Documentation
-- [Backend API](./backend/README.md) - Backend development guide
-- [Frontend Guide](./frontend/README.md) - Frontend development guide
-
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -376,17 +365,10 @@ npm start
 
 This project is licensed under the MIT License.
 
-## 👥 Authors
+## 🏎️ Built for Motorsports Enthusiasts
 
-Your Name - [@yourhandle](https://twitter.com/yourhandle)
-
-## 🙏 Acknowledgments
-
-- Next.js team for the amazing framework
-- shadcn for the beautiful UI components
-- Express.js community
-- MongoDB and PostgreSQL teams
+Track your favorite racing series all in one place!
 
 ---
 
-**Happy Coding! 🚀**
+**Happy Racing! 🏁**

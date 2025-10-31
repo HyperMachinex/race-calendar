@@ -1,6 +1,6 @@
--- PostgreSQL initialization script
+-- PostgreSQL initialization script for Race Calendar
 
--- Create categories table
+-- Create categories table (racing series)
 CREATE TABLE IF NOT EXISTS categories (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS categories (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create events table
+-- Create events table (racing events)
 CREATE TABLE IF NOT EXISTS events (
     id SERIAL PRIMARY KEY,
     title VARCHAR(200) NOT NULL,
@@ -33,16 +33,16 @@ CREATE INDEX idx_events_date ON events(date);
 CREATE INDEX idx_events_category ON events(category_id);
 CREATE INDEX idx_events_date_category ON events(date, category_id);
 
--- Insert default categories
+-- Insert default Motorsports categories
 INSERT INTO categories (name, color, icon, description, is_default) VALUES
-('EPL', '#8b5cf6', '⚽', 'English Premier League events', TRUE),
-('Personal', '#3b82f6', '👤', 'Personal events and appointments', TRUE),
-('Work', '#f97316', '💼', 'Work-related events and meetings', TRUE),
-('Holiday', '#10b981', '🎉', 'Holidays and celebrations', TRUE),
-('Birthday', '#ec4899', '🎂', 'Birthday celebrations', TRUE),
-('Meeting', '#6366f1', '📅', 'Meetings and conferences', TRUE),
-('Reminder', '#f59e0b', '⏰', 'Important reminders', TRUE),
-('Other', '#14b8a6', '📌', 'Other events', TRUE)
+('Formula 1', '#e10600', '🏎️', 'Formula 1 Grand Prix races', TRUE),
+('MotoGP', '#ff6600', '🏍️', 'MotoGP motorcycle racing events', TRUE),
+('NASCAR', '#ffd700', '🏁', 'NASCAR Cup Series races', TRUE),
+('WEC', '#0066cc', '🏆', 'World Endurance Championship', TRUE),
+('Rally', '#00a650', '🚗', 'WRC and rally championships', TRUE),
+('IndyCar', '#001489', '🏎️', 'IndyCar Series races', TRUE),
+('Formula E', '#00aaff', '⚡', 'Formula E electric racing', TRUE),
+('Other', '#6b7280', '🏁', 'Other motorsports events', TRUE)
 ON CONFLICT (name) DO NOTHING;
 
 -- Create function to update updated_at timestamp

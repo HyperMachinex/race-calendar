@@ -5,7 +5,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: event-calendar-frontend
+    container_name: race-calendar-frontend
     ports:
       - "3000:3000"
     environment:
@@ -14,7 +14,7 @@ services:
     depends_on:
       - backend
     networks:
-      - event-calendar-network
+      - race-calendar-network
     restart: unless-stopped
 
   # Backend - Express API
@@ -22,16 +22,16 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: event-calendar-backend
+    container_name: race-calendar-backend
     ports:
       - "5000:5000"
     environment:
       - NODE_ENV=production
       - PORT=5000
-      - MONGODB_URI=mongodb://mongo:27017/event_calendar
+      - MONGODB_URI=mongodb://mongo:27017/race_calendar
       - POSTGRES_HOST=postgres
       - POSTGRES_PORT=5432
-      - POSTGRES_DB=event_calendar
+      - POSTGRES_DB=race_calendar
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - JWT_SECRET=your-secret-key-change-in-production
@@ -40,7 +40,7 @@ services:
       - mongo
       - postgres
     networks:
-      - event-calendar-network
+      - race-calendar-network
     restart: unless-stopped
     volumes:
       - ./backend/logs:/app/logs
@@ -48,37 +48,37 @@ services:
   # MongoDB
   mongo:
     image: mongo:7.0
-    container_name: event-calendar-mongo
+    container_name: race-calendar-mongo
     ports:
       - "27017:27017"
     environment:
-      - MONGO_INITDB_DATABASE=event_calendar
+      - MONGO_INITDB_DATABASE=race_calendar
     volumes:
       - mongo_data:/data/db
       - ./backend/database/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     networks:
-      - event-calendar-network
+      - race-calendar-network
     restart: unless-stopped
 
   # PostgreSQL
   postgres:
     image: postgres:16-alpine
-    container_name: event-calendar-postgres
+    container_name: race-calendar-postgres
     ports:
       - "5433:5433"
     environment:
-      - POSTGRES_DB=event_calendar
+      - POSTGRES_DB=race_calendar
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./backend/database/postgres-init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
-      - event-calendar-network
+      - race-calendar-network
     restart: unless-stopped
 
 networks:
-  event-calendar-network:
+  race-calendar-network:
     driver: bridge
 
 volumes:

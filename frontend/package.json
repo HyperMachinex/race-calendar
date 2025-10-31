@@ -1,7 +1,7 @@
 {
-  "name": "event-calendar",
+  "name": "race-calendar",
   "version": "1.0.0",
-  "description": "A modern, full-featured event calendar application built with Next.js 14, TypeScript, and shadcn/ui",
+  "description": "A modern motorsports race calendar application built with Next.js 14, TypeScript, and shadcn/ui",
   "author": "Your Name",
   "license": "MIT",
   "private": true,
@@ -18,8 +18,11 @@
     "postinstall": "echo 'Setup complete! Run npm run dev to start development.'"
   },
   "keywords": [
-    "calendar",
-    "events",
+    "race-calendar",
+    "motorsports",
+    "racing",
+    "formula1",
+    "motogp",
     "nextjs",
     "react",
     "typescript",
@@ -28,7 +31,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/event-calendar.git"
+    "url": "https://github.com/yourusername/race-calendar.git"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
